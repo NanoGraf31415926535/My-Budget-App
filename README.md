@@ -27,7 +27,9 @@ This web-based budget planner empowers users to manage their finances effectivel
 
 ## Screenshots
 
-*(Include screenshots of your app here.  Use `![Screenshot Alt Text](path/to/screenshot.png)`)*
+![Screenshot 2025-02-20 at 13 31 07](https://github.com/user-attachments/assets/4d6978fa-e8ff-42e5-9743-c9e93e2e56ee)
+![Screenshot 2025-02-20 at 13 31 41](https://github.com/user-attachments/assets/3796d034-e54d-4ba9-bf25-922c6b6757fa)
+
 
 ## Technologies Used
 
