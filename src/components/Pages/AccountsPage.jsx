@@ -35,13 +35,16 @@ function AccountsPage({ transactions }) {
           <p className="text-gray-600">No accounts found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4"> {/* Grid layout for balances and transactions */}
+        <div className="grid grid-cols-2 gap-4">
           <div className="bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2 text-gray-800">Account Balances</h3>
             <ul className="space-y-2">
               {Object.entries(accountBalances).map(([account, balance]) => (
-                <li key={account} className="flex justify-between items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
-                  onClick={() => setSelectedAccount(account)}> {/* Added onClick and hover effect */}
+                <li
+                  key={account}
+                  className="flex justify-between items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
+                  onClick={() => setSelectedAccount(account)}
+                >
                   <span className="font-medium text-gray-800">{account}</span>
                   <span className="text-gray-600">${balance.toFixed(2)}</span>
                 </li>
@@ -49,7 +52,6 @@ function AccountsPage({ transactions }) {
             </ul>
           </div>
 
-          {/* Account Transactions Section */}
           <div className="bg-white p-4 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2 text-gray-800">
               {selectedAccount ? `${selectedAccount} Transactions` : "Select an account to view transactions"}
@@ -57,8 +59,19 @@ function AccountsPage({ transactions }) {
             {selectedAccount ? (
               <ul className="space-y-2">
                 {getAccountTransactions(selectedAccount).map((transaction, index) => (
-                  <li key={index} className="border-b border-gray-200 py-1">
-                    <span className="text-gray-800">{transaction.date}</span> - <span className="text-gray-600">{transaction.category}</span> - <span className="text-gray-800">${transaction.amount}</span>
+                  <li key={index} className="border-b border-gray-200 py-1 flex items-center"> {/* Added flex for alignment */}
+                    <span className="text-gray-800 w-24"> {/* Fixed width for date */}
+                      {transaction.date instanceof Date ? transaction.date.toLocaleDateString() : transaction.date}
+                    </span>
+                    <span className="text-gray-600 w-24"> {/* Fixed width for category */}
+                      {transaction.category}
+                    </span>
+                    <span className={`text-${transaction.amount > 0 ? 'green-500' : 'red-500'} font-medium w-16 text-right`}> {/* Color based on amount */}
+                      ${transaction.amount.toFixed(2)}
+                    </span>
+                    <span className={`text-${transaction.amount > 0 ? 'green-500' : 'red-500'} ml-2`}> {/* Income/Expense indicator */}
+                      {transaction.amount > 0 ? '(Income)' : '(Expense)'}
+                    </span>
                   </li>
                 ))}
               </ul>
