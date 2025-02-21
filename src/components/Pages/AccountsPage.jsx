@@ -8,11 +8,16 @@ function AccountsPage({ transactions }) {
 
     if (transactions && Array.isArray(transactions)) {
       transactions.forEach(transaction => {
-        if (transaction && transaction.account && transaction.amount) {
+        if (transaction && transaction.account && transaction.amount && transaction.type) { // Check for type
           if (!accountBalances[transaction.account]) {
             accountBalances[transaction.account] = 0;
           }
-          accountBalances[transaction.account] += transaction.amount;
+
+          if (transaction.type === "credit" || transaction.type === "income") {
+            accountBalances[transaction.account] += transaction.amount;
+          } else if (transaction.type === "debt" || transaction.type === "expense") {
+            accountBalances[transaction.account] -= transaction.amount;
+          }
         }
       });
     }
@@ -59,18 +64,18 @@ function AccountsPage({ transactions }) {
             {selectedAccount ? (
               <ul className="space-y-2">
                 {getAccountTransactions(selectedAccount).map((transaction, index) => (
-                  <li key={index} className="border-b border-gray-200 py-1 flex items-center"> {/* Added flex for alignment */}
-                    <span className="text-gray-800 w-24"> {/* Fixed width for date */}
+                  <li key={index} className="border-b border-gray-200 py-1 flex items-center">
+                    <span className="text-gray-800 w-24">
                       {transaction.date instanceof Date ? transaction.date.toLocaleDateString() : transaction.date}
                     </span>
-                    <span className="text-gray-600 w-24"> {/* Fixed width for category */}
+                    <span className="text-gray-600 w-24">
                       {transaction.category}
                     </span>
-                    <span className={`text-${transaction.amount > 0 ? 'green-500' : 'red-500'} font-medium w-16 text-right`}> {/* Color based on amount */}
+                    <span className={`text-${transaction.type === 'credit' || transaction.type === 'income' ? 'green-500' : 'red-500'} font-medium w-16 text-right`}> {/* Color based on type */}
                       ${transaction.amount.toFixed(2)}
                     </span>
-                    <span className={`text-${transaction.amount > 0 ? 'green-500' : 'red-500'} ml-2`}> {/* Income/Expense indicator */}
-                      {transaction.amount > 0 ? '(Income)' : '(Expense)'}
+                    <span className={`text-${transaction.type === 'credit' || transaction.type === 'income' ? 'green-500' : 'red-500'} ml-2`}> {/* Income/Expense indicator */}
+                      {transaction.type === 'credit' || transaction.type === 'income' ? '(Income)' : '(Expense)'}
                     </span>
                   </li>
                 ))}

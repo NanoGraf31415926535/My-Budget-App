@@ -1,26 +1,25 @@
-// src/components/Accounts.jsx
 import React from "react";
 
 function Accounts({ transactions }) {
   const walletTransactions = transactions.filter((t) => t.account === "wallet");
   const walletBalance = walletTransactions.reduce((sum, t) => {
-    if (t.type === "credit") {
+    if (t.type === "credit" || t.type === "income") { // Add income
       return sum + t.amount;
-    } else if (t.type === "debt") {
+    } else if (t.type === "debt" || t.type === "expense") {
       return sum - t.amount;
     } else {
-      return sum + t.amount;
+      return sum;
     }
   }, 0);
 
   const bankTransactions = transactions.filter((t) => t.account === "bank");
   const bankBalance = bankTransactions.reduce((sum, t) => {
-    if (t.type === "credit") {
+    if (t.type === "credit" || t.type === "income") { // Add income
       return sum + t.amount;
-    } else if (t.type === "debt") {
+    } else if (t.type === "debt" || t.type === "expense") {
       return sum - t.amount;
     } else {
-      return sum + t.amount;
+      return sum;
     }
   }, 0);
 
